@@ -1,1 +1,2 @@
-lightning-flash
+icevision
+lightning-flash[image]
