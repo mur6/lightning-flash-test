@@ -5,7 +5,7 @@ from flash import Trainer
 from flash.image import SemanticSegmentation, SemanticSegmentationData
 
 
-model = SemanticSegmentation.load_from_checkpoint("ss_model.pt")
+model = SemanticSegmentation.load_from_checkpoint("models/model-b4-ep1600.pt")
 
 datamodule = SemanticSegmentationData.from_files(
     predict_files=["data/samples/5.jpeg", "data/samples/with_hand.jpeg"], batch_size=2

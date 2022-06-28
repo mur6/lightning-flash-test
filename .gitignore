@@ -3,3 +3,4 @@
 lightning_logs/
 data/samples/
 data/train/
+models/
