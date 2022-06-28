@@ -8,5 +8,11 @@ $ source .venv/bin/activate.fish
 ```
 
 ## 学習
+```
+python semantic_segmentation/train.py
+```
 
 ## 推論
+```
+python semantic_segmentation/infer.py
+```
