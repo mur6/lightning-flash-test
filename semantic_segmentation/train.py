@@ -1,44 +1,39 @@
-from functools import partial
+import torch
 
 import flash
-
-# from flash.core.utilities.imports import example_requires
-from flash.image import InstanceSegmentation, InstanceSegmentationData
+from flash.image import SemanticSegmentation, SemanticSegmentationData
 
 
-data_dir = "/Users/taichi.muraki/workspace/programming/DataSynthesis/blenderproc/data/outputs/coco3/1"
-train_ann_file = f"{data_dir}/coco_annotations.json"
+# datamodule = SemanticSegmentationData.from_folders(
+#     train_folder="data/CameraRGB",
+#     train_target_folder="data/CameraSeg",
+#     val_split=0.1,
+#     transform_kwargs=dict(image_size=(256, 256)),
+#     num_classes=21,
+#     #
+# )
 
-
-datamodule = InstanceSegmentationData.from_coco(
-    train_folder=data_dir,
-    train_ann_file=train_ann_file,
-    val_split=0.1,
+datamodule = SemanticSegmentationData.from_folders(
+    train_folder="custom_data/train_images/",
+    train_target_folder="custom_data/train_masks/",
+    val_split=0.2,
+    transform_kwargs=dict(image_size=(256, 256)),
+    num_classes=3,
     batch_size=4,
 )
 
-# 2. Build the task
-model = InstanceSegmentation(
-    head="mask_rcnn",
-    backbone="resnet18_fpn",
+model = SemanticSegmentation(
+    # backbone="mobilenetv3_large_100",
+    # head="fpn",
+    # backbone="xception",
+    # head="unetplusplus",
+    backbone="efficientnet-b2",
+    head="unet",
     num_classes=datamodule.num_classes,
 )
 
 # 3. Create the trainer and finetune the model
-trainer = flash.Trainer(max_epochs=1)
+trainer = flash.Trainer(max_epochs=5, gpus=torch.cuda.device_count())
 trainer.finetune(model, datamodule=datamodule, strategy="freeze")
 
-# 4. Detect objects in a few images!
-# datamodule = InstanceSegmentationData.from_files(
-#     predict_files=[
-#         str(data_dir / "images/yorkshire_terrier_9.jpg"),
-#         str(data_dir / "images/yorkshire_terrier_12.jpg"),
-#         str(data_dir / "images/yorkshire_terrier_13.jpg"),
-#     ],
-#     batch_size=4,
-# )
-# predictions = trainer.predict(model, datamodule=datamodule)
-# print(predictions)
-
-# 5. Save the model!
-trainer.save_checkpoint("instance_segmentation_model.pt")
+trainer.save_checkpoint("ss_model.pt")
