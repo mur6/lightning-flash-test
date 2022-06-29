@@ -8,7 +8,7 @@ datamodule = SemanticSegmentationData.from_folders(
     train_target_folder="data/train/train_masks/",
     val_split=0.2,
     transform_kwargs=dict(image_size=(224, 224)),
-    num_classes=4,
+    num_classes=3,
     batch_size=4,
 )
 
