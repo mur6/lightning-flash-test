@@ -26,4 +26,4 @@ model = SemanticSegmentation(
 trainer = flash.Trainer(max_epochs=10, gpus=torch.cuda.device_count())
 trainer.finetune(model, datamodule=datamodule, strategy="freeze")
 
-trainer.save_checkpoint("ss_model.pt")
+trainer.save_checkpoint("models/model-b4-ep10.pt")
